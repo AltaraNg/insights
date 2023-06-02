@@ -1,45 +1,37 @@
+import React, { Suspense } from "react";
 import SideLayout from "@/components/sideLayout";
-import { Callout } from "@tremor/react";
-import { CheckCircleIcon } from "@heroicons/react/20/solid";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getGreetingMessage } from "@/lib/utils";
+import Loading from "@/components/loading";
+import Calendar from "@/components/calendar";
+import AnalogClock from "@/components/clock";
+import HomeComponent from "./HomeComponent";
 
-export default function Home() {
+export default async function Home({ searchParams }: { searchParams: { branch: string, from: string, to?: string } }) {
+  // @ts-expect-error
+  const session = await getServerSession(authOptions);
+  const user: string = session?.user?.name || "";
+
+
   return (
     <SideLayout>
-      <main className="flex min-h-screen flex-col p-12">
-        <Callout
-          className="mt-4 max-w-xl"
-          title="Welcome!"
-          icon={CheckCircleIcon}
-          color="teal"
-        >
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </Callout>
+      <main className="flex min-h-screen flex-col">
+        <h2 className="text-2xl font-semibold">{getGreetingMessage(user)}</h2>
+        <div className="">
+          <div className="xl:pr-80">
+            <Suspense fallback={<Loading />}>
+              {/* @ts-expect-error Server Component */}
+              <HomeComponent searchParams={searchParams} />
+            </Suspense>
+          </div>
 
-        <div className="mb-8 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left mt-8 gap-4">
-          <a
-            href="https://adeniyi.in/"
-            className="group rounded-lg border border-transparent px-5 py-4 transition-colors bg-base-200"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={`mb-3 text-2xl font-semibold`}>
-              Blog <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">-&gt;</span>
-            </h2>
-            <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>Find in-depth information about Adeniyi</p>
-          </a>
-
-          <a
-            href="https://blog.adeniyi.in/"
-            className="group rounded-lg border border-transparent px-5 py-4 bg-base-200"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={`mb-3 text-2xl font-semibold`}>
-              Docs <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">-&gt;</span>
-            </h2>
-            <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>Learn more about web development from Insights</p>
-          </a>
+          <aside className="fixed inset-y-0 right-0 hidden w-80 overflow-y-auto top-16 border-l border-gray-200 px-4 py-6 xl:flex xl:flex-col items-center ">
+            <div className="p-4 rounded-md shadow-sm w-full border flex items-center justify-center mb-4">
+              <AnalogClock />
+            </div>
+            <Calendar />
+          </aside>
         </div>
       </main>
     </SideLayout>

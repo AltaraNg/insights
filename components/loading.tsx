@@ -6,7 +6,7 @@ export default function Loading() {
                 <div className="h-10 w-full bg-base-300 rounded-md"></div>
                 <div className="h-10 w-full bg-base-300 rounded-md"></div>
             </div>
-            <div className="mt-4 h-96 w-full bg-base-300 rounded-md">
+            <div className="mt-4 h-[700px] w-full bg-base-300 rounded-md">
             </div>
         </div>
     );

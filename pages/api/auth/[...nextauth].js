@@ -1,19 +1,11 @@
 import CredentialsProvider from "next-auth/providers/credentials"
-import GoogleProvider from "next-auth/providers/google";
 import NextAuth from "next-auth"
-import { FirestoreAdapter } from "@next-auth/firebase-adapter";
-import { firestore } from "@/lib/firestore";
 
 export const authOptions = {
-    // debug: true,
-    adapter: FirestoreAdapter(firestore),
+    debug: true,
     providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_ID,
-            clientSecret: process.env.GOOGLE_SECRET,
-        }),
         CredentialsProvider({
-            name: "Credentials",
+            name: "credentials",
             async authorize(credentials, req) {
                 const res = await fetch(process.env.AUTH_API, {
                     method: "POST",

@@ -12,8 +12,8 @@ export default function ZeroState() {
                     height={0}
                 />
                 <div className="mx-auto mt-4 max-w-2xl text-center">
-                    <h1 className="mt-4 text-4xl font-bold tracking-tight text-gray-900">No activity to display</h1>
-                    <p className="mt-4 text-base leading-7 text-gray-600 sm:leading-8">Check back later or try a new search</p>
+                    <h1 className="mt-2 text-4xl font-semibold tracking-tight text-gray-700">No activity to display</h1>
+                    <p className="mt-2 text-base leading-7 text-gray-600 sm:leading-8">Check back later or try a new search</p>
                 </div>
             </main>
         </div>

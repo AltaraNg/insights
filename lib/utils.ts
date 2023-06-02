@@ -28,9 +28,63 @@ const startOfMonth = (): string => {
     return currentDate.toString();
 }
 
+const endOfMonth = (): string => {
+    const now = new Date();
+    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    return lastDayOfMonth.toString();
+}
+
 const sleep = (ms: number): Promise<null> => {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
+const getInitials = (fullName: string): { initials: string, color: string } => {
+    const names = fullName.split(' ');
+    let initials = '';
 
-export { buildUrl, cleanDate, startOfMonth, sleep }
+    for (let i = 0; i < names.length; i++) {
+        const name = names[i];
+        if (name.length > 0) {
+            initials += name[0].toUpperCase();
+        }
+    }
+
+    const colors = ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#f1c40f', '#e67e22', '#e74c3c'];
+    const colorIndex = (initials.charCodeAt(0) + initials.charCodeAt(initials.length - 1)) % colors.length;
+    const color = colors[colorIndex];
+
+    return { initials, color };
+}
+
+const getGreetingMessage = (name: string): string => {
+    const currentTime = moment();
+    const hour = currentTime.hour();
+    let greeting = '';
+
+    if (hour < 12) {
+        greeting = 'Good morning';
+    } else if (hour < 18) {
+        greeting = 'Good afternoon';
+    } else {
+        greeting = 'Good evening';
+    }
+
+    return `${greeting}, ${name.split(' ')[0]}!`;
+}
+
+const currency = (number: number): string => {
+    return number.toLocaleString('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 });
+}
+
+const sortAreaData = (data: Array<{ date: string, category: string, count: string }>): Array<any> => {
+    const resultMap = new Map();
+    data.forEach(({ date, category, count }) => {
+        if (!resultMap.has(date)) {
+            resultMap.set(date, { date });
+        }
+        resultMap.get(date)[category] = count;
+    });
+    return Array.from(resultMap.values());
+}
+
+export { buildUrl, cleanDate, currency, startOfMonth, sleep, getInitials, getGreetingMessage, sortAreaData, endOfMonth }

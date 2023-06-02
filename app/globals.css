@@ -26,15 +26,33 @@ body {
     rgb(var(--background-start-rgb)); */
   /* @apply flex flex-col min-h-screen; */
   /* font-family: "Outfit", sans-serif; */
-  @apply bg-base-100
+  @apply bg-base-100;
 }
 
 @layer components {
   .form-fix {
-    @apply focus:outline-0
+    @apply focus:outline-0;
   }
 }
 
 .label {
-  @apply p-0
+  @apply p-0;
+}
+
+.react-calendar {
+  @apply p-4 rounded-md !border-base-300 !max-w-[300px];
+  font-family: initial !important;
+}
+
+.react-clock {
+  height: 200px !important;
+  width: 200px !important;
+}
+
+.card-bg {
+  @apply absolute inset-0 h-full w-full bg-[url('/grid.svg')] opacity-10 [background-position:calc(100%+5px)_calc(100%+29px)]
+}
+
+.tremor-BarList-barText {
+  @apply capitalize
 }

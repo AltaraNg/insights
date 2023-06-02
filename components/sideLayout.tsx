@@ -5,13 +5,9 @@ import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
     Bars3Icon,
     BellIcon,
-    ChartPieIcon,
-    Cog6ToothIcon,
-    DocumentDuplicateIcon,
-    FolderIcon,
     HomeIcon,
-    UsersIcon,
     XMarkIcon,
+    CreditCardIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import Image from "next/image";
@@ -19,19 +15,21 @@ import cn from 'classnames';
 import { useSession, signOut } from "next-auth/react";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { getInitials } from '@/lib/utils';
 
-const navigation = [
+const navigation: { name: string, path: string, icon: any }[] = [
     { name: 'Dashboard', path: '/', icon: HomeIcon },
-    { name: 'Posts', path: '/dashboard/posts', icon: UsersIcon },
-    { name: 'Projects', path: '/dashboard/project', icon: FolderIcon },
-    { name: 'Reports', path: '/dashboard/reports', icon: ChartPieIcon },
-    { name: 'SandBox', path: '/sandbox', icon: DocumentDuplicateIcon },
+    { name: 'Paystack', path: '/dashboard/paystack', icon: CreditCardIcon },
+    // { name: 'Posts', path: '/dashboard/posts', icon: UsersIcon },
+    // { name: 'Projects', path: '/dashboard/project', icon: FolderIcon },
+    // { name: 'Reports', path: '/dashboard/reports', icon: ChartPieIcon },
+    // { name: 'SandBox', path: '/sandbox', icon: DocumentDuplicateIcon },
 ]
-const teams = [
-    { id: 1, name: 'Heroicons', path: '/', initial: 'H', current: false },
-    { id: 2, name: 'Workcation', path: '/', initial: 'W', current: false },
-]
-const userNavigation = [
+// const teams: { id: number, name: string, path: string, initial: string, current: boolean }[] = [
+//     { id: 1, name: 'Heroicons', path: '/', initial: 'H', current: false },
+//     { id: 2, name: 'Workcation', path: '/', initial: 'W', current: false },
+// ]
+const userNavigation: { name: string, href: string }[] = [
     { name: 'Your profile', href: '/profile' },
     { name: 'Settings', href: '/settings' },
 ]
@@ -40,10 +38,10 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
     const [sidebarOpen, setSidebarOpen] = useState(true)
     const { data: session } = useSession()
 
-    const pathname = usePathname();
+    const pathname: string | null= usePathname();
 
     // Define the active route
-    const isActiveRoute = (route: string) => {
+    const isActiveRoute = (route: string): boolean => {
         return pathname === route;
     };
 
@@ -128,7 +126,7 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                                                     ))}
                                                 </ul>
                                             </li>
-                                            <li>
+                                            {/* <li>
                                                 <div className="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
                                                 <ul role="list" className="-mx-2 mt-2 space-y-1">
                                                     {teams.map((team) => (
@@ -169,7 +167,7 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                                                     />
                                                     Settings
                                                 </Link>
-                                            </li>
+                                            </li> */}
                                         </ul>
                                     </nav>
                                 </div>
@@ -221,7 +219,7 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                                     ))}
                                 </ul>
                             </li>
-                            <li>
+                            {/* <li>
                                 <div className="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
                                 <ul role="list" className="-mx-2 mt-2 space-y-1">
                                     {teams.map((team) => (
@@ -262,7 +260,7 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                                     />
                                     Settings
                                 </Link>
-                            </li>
+                            </li> */}
                         </ul>
                     </nav>
                 </div>
@@ -306,13 +304,19 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                             <Menu as="div" className="relative">
                                 <Menu.Button className="-m-1.5 flex items-center p-1.5">
                                     <span className="sr-only">Open user menu</span>
-                                    <Image
-                                        className="h-8 w-8 rounded-full bg-gray-50"
-                                        src={session?.user?.image || ""}
-                                        alt="Avatar"
-                                        width={32}
-                                        height={32}
-                                    />
+                                    {session?.user?.image ? (
+                                        <Image
+                                            className="h-8 w-8 rounded-full bg-gray-50"
+                                            src={session?.user?.image || ""}
+                                            alt="Avatar"
+                                            width={32}
+                                            height={32}
+                                        />
+                                    ) : (
+                                        <span style={{ backgroundColor: getInitials(session?.user?.name || "").color }} className={`inline-flex h-10 w-10 items-center justify-center rounded-full`}>
+                                            <span className={'font-medium leading-none text-white'}>{getInitials(session?.user?.name || "").initials}</span>
+                                        </span>
+                                    )}
                                     <span className="hidden lg:flex lg:items-center">
                                         <span className="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
                                             {session?.user?.name}
@@ -362,7 +366,7 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                     </div>
                 </div>
 
-                <main className="py-10">
+                <main className="py-8">
                     <div className="px-4 sm:px-6 lg:px-8">{children}</div>
                 </main>
             </div>

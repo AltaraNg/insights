@@ -1,14 +1,16 @@
-import './globals.css'
-import { Outfit } from 'next/font/google';
+import './globals.css';
+import 'react-calendar/dist/Calendar.css';
+import 'react-clock/dist/Clock.css';
+import { Outfit, Open_Sans } from 'next/font/google';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { SessionProvider } from "@/components/sessionProvider";
 
-const inter = Outfit({ subsets: ['latin'] })
+const inter = Outfit({ weight: ['400', '500', '600'], subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Create Next App',
-  description: 'A Nextjs 13 boilerplate',
+  title: 'Altara',
+  description: 'Altara Dashboard',
 }
 
 export default async function RootLayout({
