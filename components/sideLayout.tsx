@@ -189,7 +189,7 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                             width={0}
                             height={0}
                         />
-                        <p className='text-2xl font-semibold text-primary'>Admin 2.0</p>
+                        <p className='text-2xl font-semibold text-primary'>Admin 2.0 <span className='text-xs'>Beta</span></p>
                     </div>
                     <nav className="flex flex-1 flex-col">
                         <ul role="list" className="flex flex-1 flex-col gap-y-7">
