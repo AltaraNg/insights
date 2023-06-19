@@ -55,8 +55,8 @@ export default async function PaystackBoard({ searchParams }: { searchParams: { 
     ];
 
     return (
-        <div className="flex gap-6">
-            <div className="flex-1">
+        <div>
+            <div className="lg:pr-80">
                 <div className="font-semibold">PaystackBoard</div>
                 <SearchComponent />
                 <div className="mt-4">
@@ -67,7 +67,7 @@ export default async function PaystackBoard({ searchParams }: { searchParams: { 
                 <Title className="mt-8 mb-1 text-lg">List of customers with direct debit issue</Title>
                 <Table direction={"ltr"} rows={createRows()} />
             </div>
-            <div className="w-[350px] p-4 rounded-md border shadow-md hidden md:block">
+            <div className="lg:fixed inset-y-0 right-0 hidden md:w-80 overflow-y-auto top-16 border-l border-gray-200 px-4 py-6 lg:flex lg:flex-col">
                 <p className="text-lg -mb-4">Notes</p>
                 {list.map((i) => (
                     <div className="flex items-start gap-x-3 mt-4" key={i.key}>
