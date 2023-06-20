@@ -16,7 +16,7 @@ function totalSum(data: any[], key: string): number {
 }
 
 
-const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes = [], salesDuration = [], totalSalesDuration = [], salesCategories = [], totalSalesCategory = [], branchCount = 1 }: { chartData?: Array<any>, branchData?: Array<any>, orderTypes?: Array<any>, salesDuration: any[], totalSalesDuration?: any[], salesCategories?: any[], totalSalesCategory?: any[], results?: any, branchCount: number }) => {
+const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes = [], salesDuration = [], totalSalesDuration = [], salesCategories = [], totalSalesCategory = [], totalBusinessTypes = [], branchCount = 1 }: { chartData?: Array<any>, branchData?: Array<any>, orderTypes?: Array<any>, salesDuration: any[], totalSalesDuration?: any[], salesCategories?: any[], totalSalesCategory?: any[], totalBusinessTypes?: any[], results?: any, branchCount: number }) => {
     const searchParams = useSearchParams();
     const branch: string | null = searchParams!.get('branch');
     const from: string | null = searchParams!.get('from');
@@ -106,6 +106,17 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
                             </Text>
                         </Flex>
                         <BarList data={totalSalesDuration} className="mt-2" />
+                    </Card>
+                    <Card className="mt-6" decoration="top" decorationColor="red">
+                        <Flex className="mt-4">
+                            <Text>
+                                <Bold>Business type Plan</Bold>
+                            </Text>
+                            <Text>
+                                <Bold>No of Sales</Bold>
+                            </Text>
+                        </Flex>
+                        <BarList data={totalBusinessTypes} className="mt-2" />
                     </Card>
                     <Card className='mt-6 bg-gray-50'>
                         <div className="card-bg" />
