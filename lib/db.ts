@@ -156,4 +156,23 @@ const totalSalesCategoryQuery = async (from: string, to: string, branch: string)
     
 }
 
-export { getBranches, getOrders, salesMetrics, showroomSales, orderTypesQuery, salesDurationQuery, totalSalesDurationQuery, salesCategoryQuery, totalSalesCategoryQuery }
+const totalBusinessTypesQuery = async (from: string, to: string, branch: string): Promise<Array<any>> => {
+    const branchQuery = branch ? 'AND branch_id = :branch' : ''
+    const result: Array<any> = await sequelize.query(`
+            SELECT bt.name, COUNT(new_orders.id) as value
+            FROM new_orders
+            JOIN business_types AS bt ON bt.id = new_orders.business_type_id
+            WHERE order_date >= :from AND order_date <= :to ${branchQuery}
+            GROUP BY business_type_id
+            ORDER BY name ASC
+        `,
+        {
+            replacements: { from, to, branch },
+            type: QueryTypes.SELECT
+        });
+
+    return result;
+    
+}
+
+export { getBranches, getOrders, salesMetrics, showroomSales, orderTypesQuery, salesDurationQuery, totalSalesDurationQuery, salesCategoryQuery, totalSalesCategoryQuery, totalBusinessTypesQuery }
