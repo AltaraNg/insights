@@ -49,6 +49,16 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
     }
 
 
+    const deltaType = (percentage: number) => {
+        if (percentage > 70) {
+            return "moderateIncrease";
+        } else if (percentage > 40) {
+            return "unchanged";
+        }
+        return "decrease";
+    }
+
+
 
 
     return (
@@ -63,7 +73,7 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
                                     <Text>Sales</Text>
                                     <Metric className='flex items-baseline'>{totalSales}<Text>/{Math.round(targetSales)}</Text></Metric>
                                 </div>
-                                <BadgeDelta deltaType="moderateIncrease">{percentage.toFixed(0)}%</BadgeDelta>
+                                <BadgeDelta deltaType={deltaType(percentage)}>{percentage.toFixed(0)}%</BadgeDelta>
                             </Flex>
                             {/* <Flex className="mt-4">
                                 <Text>{percentage.toFixed(0)}% of target</Text>
@@ -81,6 +91,12 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
                             <div>
                                 <Text>Revenue</Text>
                                 <Metric>{currency(totalRevenue)}</Metric>
+                            </div>
+                        </Card>
+                        <Card className="max-w-xs" decoration="top" decorationColor="green">
+                            <div>
+                                <Text>Average revenue per sale</Text>
+                                <Metric>{currency(totalRevenue / totalSales)}</Metric>
                             </div>
                         </Card>
                     </div>
