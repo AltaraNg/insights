@@ -19,27 +19,29 @@ const PaystackComponent = ({
     return (
         <div className="mt-4">
             <Divider />
-            <Card className="max-w-lg relative pb-24">
-                <div className="absolute right-4 bottom-4 text-sm">
-                    <ul className="list-disc">
-                        {groupIssuesArr.map((i: any) => (
-                            <li key={i.name}>
-                                <span>{i.name}</span>: <span className="font-semibold">{i.percentage !== "0.00" ? i.percentage : 0}%</span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-                <Title>Error Groups</Title>
-                <DonutChart
-                    variant="pie"
-                    className="mt-6"
-                    data={groupIssuesArr}
-                    category="value"
-                    index="name"
-                    valueFormatter={valueFormatter}
-                    colors={["violet", "indigo", "rose", "cyan", "amber"]}
-                />
-            </Card>
+            {groupIssuesArr.length > 0 && (
+                <Card className="max-w-lg relative pb-24">
+                    <div className="absolute right-4 bottom-4 text-sm">
+                        <ul className="list-disc">
+                            {groupIssuesArr.map((i: any) => (
+                                <li key={i.name}>
+                                    <span>{i.name}</span>: <span className="font-semibold">{i.percentage !== "0.00" ? i.percentage : 0}%</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <Title>Error Groups</Title>
+                    <DonutChart
+                        variant="pie"
+                        className="mt-6"
+                        data={groupIssuesArr}
+                        category="value"
+                        index="name"
+                        valueFormatter={valueFormatter}
+                        colors={["violet", "indigo", "rose", "cyan", "amber"]}
+                    />
+                </Card>
+            )}
             <Card className="mt-4 max-h-[500px] overflow-auto">
                 <Title>Direct Debit Issues</Title>
                 <p>Total number of sales: {totalOrders}</p>
