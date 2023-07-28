@@ -19,6 +19,7 @@ const PaystackComponent = ({
     return (
         <div className="mt-4">
             <Divider />
+            {/* Only show then there are issues */}
             {groupIssuesArr.length > 0 && (
                 <Card className="max-w-lg relative pb-24">
                     <div className="absolute right-4 bottom-4 text-sm">
