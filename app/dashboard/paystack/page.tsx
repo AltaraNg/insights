@@ -14,10 +14,57 @@ export default async function PaystackBoard({ searchParams }: { searchParams: { 
     const sum = ddIssuesResult.reduce((acc, obj) => acc + obj.count, 0);
     const ddIssues = ddIssuesResult
         .map(({ statusMessage, count }) => ({ name: `${statusMessage} (${((count / sum) * 100).toFixed(2)}%)`, value: count }))
-        .filter(({ name }) => !["Something went wrong", "Endpoint request timed out"].includes(name));
+        .filter(({ name }) => !["Something went wrong"].includes(name));
 
     const orderCountRes = await orderCount(from, to);
     const ptIssuesRes = await ptIssues(from, to);
+
+    const groupIssues = { "Customers Error": 0, "Fraud Block": 0, "Bank Error": 0, "Altara Error": 0 };
+    ddIssuesResult.forEach((item) => {
+        if (
+            [
+                "sufficient",
+                "Account closed",
+                "Customer Cancellation",
+                "Expired card",
+                "Lost Card",
+                "Pickup card",
+                "Restricted",
+                "Stolen Card",
+                "This cardholder has defaulted",
+                "Transaction not",
+            ].some((keyword) => item.statusMessage.includes(keyword))
+        ) {
+            groupIssues["Customers Error"] += item.count;
+        } else if (["Fraud"].some((keyword) => item.statusMessage.includes(keyword))) {
+            groupIssues["Fraud Block"] += item.count;
+        } else if (
+            [
+                "This authorization is not reusable",
+                "Contact Acquirer",
+                "Do not hon",
+                "timed out",
+                "Error occur",
+                "Invalid transaction",
+                "Issuer or switch inoperative",
+                "Negative CAM,",
+                "Refer to",
+                "System Error",
+                "This authorization could not be charged.",
+                "Unknown",
+            ].some((keyword) => item.statusMessage.includes(keyword))
+        ) {
+            groupIssues["Bank Error"] += item.count;
+        } else if (
+            ["authorization_code", "Email does not match Authorization code.", "Invalid email address passed", "No Card Record"].some((keyword) =>
+                item.statusMessage.includes(keyword)
+            )
+        ) {
+            groupIssues["Altara Error"] += item.count;
+        }
+    });
+
+    const groupIssuesArr = Object.entries(groupIssues).map(([name, value]) => ({ name, value, percentage: ((value / sum) * 100).toFixed(2) }));
 
     const createRows = () => {
         return ptIssuesRes.map((item, i) => ({ id: i + 1, ...item }));
@@ -26,32 +73,33 @@ export default async function PaystackBoard({ searchParams }: { searchParams: { 
     const list = [
         {
             key: "This authorization is not reusable",
-            content: "This error is generated when a recurring payment isn’t possible on a Verve card."
+            content: "This error is generated when a recurring payment isn’t possible on a Verve card.",
         },
         {
             key: "No authorization code",
-            content: "Customer has no authorization code."
+            content: "Customer has no authorization code.",
         },
         {
             key: "Email does not match Authorization code",
-            content: "If an authorization is paired with the wrong email."
+            content: "If an authorization is paired with the wrong email.",
         },
         {
             key: "Do not honor",
-            content: "Bank declines a transaction for reasons best known to them, or when a restriction has been placed on a customer’s account."
+            content: "Bank declines a transaction for reasons best known to them, or when a restriction has been placed on a customer’s account.",
         },
         {
             key: "Pickup card (lost card)",
-            content: "The customer's card has been reported as lost and a new card has been printed but they are yet to pick it up from their bank."
+            content: "The customer's card has been reported as lost and a new card has been printed but they are yet to pick it up from their bank.",
         },
         {
             key: "Expired card",
-            content: "This means that the card the customer is attempting the payment with has expired."
+            content: "This means that the card the customer is attempting the payment with has expired.",
         },
         {
             key: "Contact acquirer",
-            content: "This is an error message returned by the customer's Card Acquirer (their bank) which means they are unable to process the transaction at the time."
-        }
+            content:
+                "This is an error message returned by the customer's Card Acquirer (their bank) which means they are unable to process the transaction at the time.",
+        },
     ];
 
     return (
@@ -61,7 +109,7 @@ export default async function PaystackBoard({ searchParams }: { searchParams: { 
                 <SearchComponent />
                 <div className="mt-4">
                     <Suspense fallback={<Loading />}>
-                        <PaystackComponent ddIssues={ddIssues} totalOrders={orderCountRes[0].orderCount} totalIssues={sum} />
+                        <PaystackComponent ddIssues={ddIssues} totalOrders={orderCountRes[0].orderCount} totalIssues={sum} groupIssuesArr={groupIssuesArr} />
                     </Suspense>
                 </div>
                 <Title className="mt-8 mb-1 text-lg">List of customers with direct debit issue</Title>
@@ -74,7 +122,9 @@ export default async function PaystackBoard({ searchParams }: { searchParams: { 
                         <div className="flex-none rounded-full p-1 text-green-400 bg-green-400/10 mt-1">
                             <div className="h-2 w-2 rounded-full bg-current" />
                         </div>
-                        <p className="text-sm leading-6"><span className="font-semibold">{i.key}</span> - {i.content}</p>
+                        <p className="text-sm leading-6">
+                            <span className="font-semibold">{i.key}</span> - {i.content}
+                        </p>
                     </div>
                 ))}
             </div>
