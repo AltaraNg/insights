@@ -109,7 +109,12 @@ export default async function PaystackBoard({ searchParams }: { searchParams: { 
                 <SearchComponent />
                 <div className="mt-4">
                     <Suspense fallback={<Loading />}>
-                        <PaystackComponent ddIssues={ddIssues} totalOrders={orderCountRes[0].orderCount} totalIssues={sum} groupIssuesArr={groupIssuesArr} />
+                        <PaystackComponent
+                            ddIssues={ddIssues}
+                            totalOrders={orderCountRes[0].orderCount}
+                            totalIssues={sum}
+                            groupIssuesArr={groupIssuesArr}
+                        />
                     </Suspense>
                 </div>
                 <Title className="mt-8 mb-1 text-lg">List of customers with direct debit issue</Title>

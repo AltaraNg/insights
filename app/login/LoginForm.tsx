@@ -2,13 +2,12 @@
 
 import cn from "classnames";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { SignInResponse, signIn } from "next-auth/react";
 
 export default function LoginForm() {
-    const router = useRouter();
     const [email, setEmail] = useState("");
-    const [error, setError] = useState(false);
+    // eslint-disable-next-line no-unused-vars
+    const [_, setError] = useState(false);
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -20,7 +19,7 @@ export default function LoginForm() {
             if (!response?.ok) {
                 setError(true);
             }
-            window.location.href="/";
+            window.location.href = "/";
             setLoading(false);
         } catch (error) {
             setLoading(false);

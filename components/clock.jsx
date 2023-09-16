@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Clock from 'react-clock';
+import React, { useEffect, useState } from "react";
+import Clock from "react-clock";
 
 export default function AnalogClock() {
     const [value, setValue] = useState(new Date());
@@ -14,7 +14,5 @@ export default function AnalogClock() {
         };
     }, []);
 
-    return (
-        <Clock value={value} />
-    );
+    return <Clock value={value} />;
 }
