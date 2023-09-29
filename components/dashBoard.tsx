@@ -1,7 +1,22 @@
-'use client'
+"use client";
 
-import React from 'react';
-import { AreaChart, BadgeDelta, BarList, Bold, Card, Text, Title, Metric, Flex, ProgressBar, Divider, BarChart, LineChart, Subtitle, CategoryBar } from "@tremor/react";
+import React from "react";
+import {
+    AreaChart,
+    BadgeDelta,
+    BarList,
+    Bold,
+    Card,
+    Text,
+    Title,
+    Metric,
+    Flex,
+    Divider,
+    BarChart,
+    LineChart,
+    Subtitle,
+    CategoryBar,
+} from "@tremor/react";
 import ZeroState from "@/components/zeroState";
 import { currency } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
@@ -15,17 +30,38 @@ function totalSum(data: any[], key: string): number {
     return data.reduce((acc, curr) => acc + curr[key], 0);
 }
 
-
-const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes = [], salesDuration = [], totalSalesDuration = [], salesCategories = [], totalSalesCategory = [], totalBusinessTypes = [], branchCount = 1 }: { chartData?: Array<any>, branchData?: Array<any>, orderTypes?: Array<any>, salesDuration: any[], totalSalesDuration?: any[], salesCategories?: any[], totalSalesCategory?: any[], totalBusinessTypes?: any[], results?: any, branchCount: number }) => {
+const DashBoard = ({
+    chartData = [],
+    branchData = [],
+    results = [],
+    orderTypes = [],
+    salesDuration = [],
+    totalSalesDuration = [],
+    salesCategories = [],
+    totalSalesCategory = [],
+    totalBusinessTypes = [],
+    branchCount = 1,
+}: {
+    chartData?: Array<any>;
+    branchData?: Array<any>;
+    orderTypes?: Array<any>;
+    salesDuration: any[];
+    totalSalesDuration?: any[];
+    salesCategories?: any[];
+    totalSalesCategory?: any[];
+    totalBusinessTypes?: any[];
+    results?: any;
+    branchCount: number;
+}) => {
     const searchParams = useSearchParams();
-    const branch: string | null = searchParams!.get('branch');
-    const from: string | null = searchParams!.get('from');
-    const to: string | null = searchParams!.get('to');
+    const branch: string | null = searchParams!.get("branch");
+    const from: string | null = searchParams!.get("from");
+    const to: string | null = searchParams!.get("to");
 
-    let categories: Array<string> = [];
-    if (chartData.length > 0) {
-        categories = Object.keys(chartData[0]).filter(item => item != "date")
-    }
+    // let categories: Array<string> = [];
+    // if (chartData.length > 0) {
+    //     categories = Object.keys(chartData[0]).filter((item) => item != "date");
+    // }
 
     const fromDate = new Date(from || startOfMonth());
     const toDate = new Date(to || endOfMonth());
@@ -39,15 +75,14 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
 
     const targetPerDay = 2.5;
     const bCount = branch ? 1 : branchCount;
-    const targetSales: number = (targetPerDay * daysDiff) * bCount;
+    const targetSales: number = targetPerDay * daysDiff * bCount;
     // const targetSales: number = branch ? (90) : (90 * 21);
     const percentage: number = (totalSales / targetSales) * 100;
 
-    let salesDurationCategories: Array<string> = [];
-    if (salesDuration.length > 0) {
-        salesDurationCategories = Object.keys(salesDuration[0]).filter(item => item != "date")
-    }
-
+    // let salesDurationCategories: Array<string> = [];
+    // if (salesDuration.length > 0) {
+    //     salesDurationCategories = Object.keys(salesDuration[0]).filter((item) => item != "date");
+    // }
 
     const deltaType = (percentage: number) => {
         if (percentage > 70) {
@@ -56,22 +91,22 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
             return "unchanged";
         }
         return "decrease";
-    }
-
-
-
+    };
 
     return (
         <div className="mt-4">
             <Divider />
             {chartData.length > 0 ? (
                 <>
-                    <div className='flex justify-start gap-6'>
+                    <div className="flex justify-start gap-6">
                         <Card className="max-w-xs" decoration="top" decorationColor="indigo">
                             <Flex alignItems="start">
                                 <div>
                                     <Text>Sales</Text>
-                                    <Metric className='flex items-baseline'>{totalSales}<Text>/{Math.round(targetSales)}</Text></Metric>
+                                    <Metric className="flex items-baseline">
+                                        {totalSales}
+                                        <Text>/{Math.round(targetSales)}</Text>
+                                    </Metric>
                                 </div>
                                 <BadgeDelta deltaType={deltaType(percentage)}>{percentage.toFixed(0)}%</BadgeDelta>
                             </Flex>
@@ -134,7 +169,7 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
                         </Flex>
                         <BarList data={totalBusinessTypes} className="mt-2" />
                     </Card>
-                    <Card className='mt-6 bg-gray-50'>
+                    <Card className="mt-6 bg-gray-50">
                         <div className="card-bg" />
                         <Title>Sales Performance</Title>
                         <LineChart
@@ -150,9 +185,7 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
                     </Card>
                     <Card className="mt-6">
                         <Title>Showrooms Performance Snapshot</Title>
-                        <Subtitle>
-                            Analyzing Sales Performance across Company showrooms
-                        </Subtitle>
+                        <Subtitle>Analyzing Sales Performance across Company showrooms</Subtitle>
                         <BarChart
                             className="mt-6"
                             data={branchData}
@@ -177,7 +210,7 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
                             showLegend={true}
                         />
                     </Card>
-                    <Card className='mt-6'>
+                    <Card className="mt-6">
                         <div className="card-bg" />
                         <Title>Sales Types</Title>
                         <BarChart
@@ -198,7 +231,16 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
                             className="mt-6"
                             data={salesCategories}
                             index="date"
-                            categories={["new sales", "renewal(DSA)", "Staff Purchase", "Staff Referral", "Repossesion Sale", "Referral Sales", "Cash n Carry", "No BS"]}
+                            categories={[
+                                "new sales",
+                                "renewal(DSA)",
+                                "Staff Purchase",
+                                "Staff Referral",
+                                "Repossesion Sale",
+                                "Referral Sales",
+                                "Cash n Carry",
+                                "No BS",
+                            ]}
                             colors={["orange", "indigo", "pink", "cyan", "blue", "rose", "red", "green"]}
                             valueFormatter={dataFormatter}
                             yAxisWidth={40}
@@ -210,7 +252,7 @@ const DashBoard = ({ chartData = [], branchData = [], results = [], orderTypes =
                 <ZeroState />
             )}
         </div>
-    )
-}
+    );
+};
 
-export default DashBoard
+export default DashBoard;

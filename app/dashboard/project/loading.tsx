@@ -11,8 +11,7 @@ export default function Loading() {
                     <div className="h-10 w-40 bg-base-200 rounded-md ml-auto"></div>
                 </div>
             </div>
-            <div className="mt-4 h-96 w-full bg-base-200 rounded-md">
-            </div>
+            <div className="mt-4 h-96 w-full bg-base-200 rounded-md"></div>
         </div>
     );
 }

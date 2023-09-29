@@ -1,44 +1,39 @@
-'use client';
+"use client";
 
-import { Fragment, useState } from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
-import {
-    Bars3Icon,
-    BellIcon,
-    HomeIcon,
-    XMarkIcon,
-    CreditCardIcon,
-} from '@heroicons/react/24/outline'
-import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import React from "react";
+import { Fragment, useState } from "react";
+import { Dialog, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon, HomeIcon, XMarkIcon, CreditCardIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import Image from "next/image";
-import cn from 'classnames';
+import cn from "classnames";
 import { useSession, signOut } from "next-auth/react";
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { getInitials } from '@/lib/utils';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { getInitials } from "@/lib/utils";
 
-const navigation: { name: string, path: string, icon: any }[] = [
-    { name: 'Dashboard', path: '/', icon: HomeIcon },
-    { name: 'Paystack', path: '/dashboard/paystack', icon: CreditCardIcon },
+const navigation: { name: string; path: string; icon: any }[] = [
+    { name: "Dashboard", path: "/", icon: HomeIcon },
+    { name: "Paystack", path: "/dashboard/paystack", icon: CreditCardIcon },
     // { name: 'Posts', path: '/dashboard/posts', icon: UsersIcon },
     // { name: 'Projects', path: '/dashboard/project', icon: FolderIcon },
     // { name: 'Reports', path: '/dashboard/reports', icon: ChartPieIcon },
     // { name: 'SandBox', path: '/sandbox', icon: DocumentDuplicateIcon },
-]
+];
 // const teams: { id: number, name: string, path: string, initial: string, current: boolean }[] = [
 //     { id: 1, name: 'Heroicons', path: '/', initial: 'H', current: false },
 //     { id: 2, name: 'Workcation', path: '/', initial: 'W', current: false },
 // ]
-const userNavigation: { name: string, href: string }[] = [
-    { name: 'Your profile', href: '/profile' },
-    { name: 'Settings', href: '/settings' },
-]
+const userNavigation: { name: string; href: string }[] = [
+    { name: "Your profile", href: "/profile" },
+    { name: "Settings", href: "/settings" },
+];
 
 export default function SideLayout({ children }: { children: React.ReactNode }) {
-    const [sidebarOpen, setSidebarOpen] = useState(true)
-    const { data: session } = useSession()
+    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const { data: session } = useSession();
 
-    const pathname: string | null= usePathname();
+    const pathname: string | null = usePathname();
 
     // Define the active route
     const isActiveRoute = (route: string): boolean => {
@@ -108,15 +103,15 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                                                                 href={item.path}
                                                                 className={cn(
                                                                     isActiveRoute(item.path)
-                                                                        ? 'bg-primary text-primary-content'
-                                                                        : 'text-gray-700 hover:bg-base-300',
-                                                                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                                                                        ? "bg-primary text-primary-content"
+                                                                        : "text-gray-700 hover:bg-base-300",
+                                                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                                                 )}
                                                             >
                                                                 <item.icon
                                                                     className={cn(
-                                                                        isActiveRoute(item.path) ? 'text-primary-content' : 'text-gray-400',
-                                                                        'h-6 w-6 shrink-0'
+                                                                        isActiveRoute(item.path) ? "text-primary-content" : "text-gray-400",
+                                                                        "h-6 w-6 shrink-0"
                                                                     )}
                                                                     aria-hidden="true"
                                                                 />
@@ -189,7 +184,9 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                             width={0}
                             height={0}
                         />
-                        <p className='text-2xl font-semibold text-primary'>Admin 2.0 <span className='text-xs'>Beta</span></p>
+                        <p className="text-2xl font-semibold text-primary">
+                            Admin 2.0 <span className="text-xs">Beta</span>
+                        </p>
                     </div>
                     <nav className="flex flex-1 flex-col">
                         <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -200,16 +197,14 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                                             <Link
                                                 href={item.path}
                                                 className={cn(
-                                                    isActiveRoute(item.path)
-                                                        ? 'bg-primary text-primary-content'
-                                                        : 'text-gray-700 hover:bg-base-300',
-                                                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                                                    isActiveRoute(item.path) ? "bg-primary text-primary-content" : "text-gray-700 hover:bg-base-300",
+                                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                                 )}
                                             >
                                                 <item.icon
                                                     className={cn(
-                                                        isActiveRoute(item.path) ? 'text-primary-content' : 'text-gray-400',
-                                                        'h-6 w-6 shrink-0'
+                                                        isActiveRoute(item.path) ? "text-primary-content" : "text-gray-400",
+                                                        "h-6 w-6 shrink-0"
                                                     )}
                                                     aria-hidden="true"
                                                 />
@@ -313,8 +308,13 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                                             height={32}
                                         />
                                     ) : (
-                                        <span style={{ backgroundColor: getInitials(session?.user?.name || "").color }} className={`inline-flex h-10 w-10 items-center justify-center rounded-full`}>
-                                            <span className={'font-medium leading-none text-white'}>{getInitials(session?.user?.name || "").initials}</span>
+                                        <span
+                                            style={{ backgroundColor: getInitials(session?.user?.name || "").color }}
+                                            className={`inline-flex h-10 w-10 items-center justify-center rounded-full`}
+                                        >
+                                            <span className={"font-medium leading-none text-white"}>
+                                                {getInitials(session?.user?.name || "").initials}
+                                            </span>
                                         </span>
                                     )}
                                     <span className="hidden lg:flex lg:items-center">
@@ -339,10 +339,7 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                                                 {({ active }) => (
                                                     <a
                                                         href={item.href}
-                                                        className={cn(
-                                                            active ? 'bg-gray-50' : '',
-                                                            'block px-3 py-1 text-sm leading-6 text-gray-900'
-                                                        )}
+                                                        className={cn(active ? "bg-gray-50" : "", "block px-3 py-1 text-sm leading-6 text-gray-900")}
                                                     >
                                                         {item.name}
                                                     </a>
@@ -350,12 +347,7 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                                             </Menu.Item>
                                         ))}
                                         <Menu.Item key={"logout"}>
-                                            <button
-                                                onClick={() => signOut()}
-                                                className={cn(
-                                                    'block px-3 py-1 text-sm leading-6 text-gray-900'
-                                                )}
-                                            >
+                                            <button onClick={() => signOut()} className={cn("block px-3 py-1 text-sm leading-6 text-gray-900")}>
                                                 Sign Out
                                             </button>
                                         </Menu.Item>
@@ -371,5 +363,5 @@ export default function SideLayout({ children }: { children: React.ReactNode }) 
                 </main>
             </div>
         </div>
-    )
+    );
 }
