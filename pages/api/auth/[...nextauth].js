@@ -1,11 +1,12 @@
-import CredentialsProvider from "next-auth/providers/credentials"
-import NextAuth from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth from "next-auth";
 
 export const authOptions = {
     debug: true,
     providers: [
         CredentialsProvider({
             name: "credentials",
+            // eslint-disable-next-line no-unused-vars
             async authorize(credentials, req) {
                 const res = await fetch(process.env.AUTH_API, {
                     method: "POST",
@@ -47,4 +48,4 @@ export const authOptions = {
     },
 };
 
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);

@@ -1,11 +1,9 @@
 import React, { Suspense } from "react";
-import Loading from "@/components/loading"
+import Loading from "@/components/loading";
 import PostComponent from "./PostComponent";
 import FeedComponent from "./FeedComponent";
 
-
 const Posts = async () => {
-
     return (
         <div>
             <div className="font-semibold">Posts</div>

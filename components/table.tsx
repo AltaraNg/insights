@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import 'react-data-grid/lib/styles.css';
-import { useMemo, useState } from 'react';
-import DataGrid, { SelectColumn, textEditor } from 'react-data-grid';
+import "react-data-grid/lib/styles.css";
+import { useMemo, useState } from "react";
+import DataGrid, { SelectColumn, textEditor } from "react-data-grid";
 
-type Direction = 'ltr' | 'rtl';
-type SortDirection = 'ASC' | 'DESC';
+type Direction = "ltr" | "rtl";
+type SortDirection = "ASC" | "DESC";
 interface Props {
     direction: Direction;
-    rows: any[]
+    rows: any[];
 }
 
 interface SortColumn {
@@ -27,49 +27,50 @@ interface Row {
 }
 
 function getColumns(
+    // eslint-disable-next-line no-unused-vars
     direction: Direction
 ): readonly any[] {
     return [
         SelectColumn,
         {
-            key: 'id',
-            name: 'ID',
+            key: "id",
+            name: "ID",
             frozen: true,
             resizable: false,
             renderSummaryCell() {
                 return <strong>Total</strong>;
-            }
+            },
         },
         {
-            key: 'customer_id',
-            name: 'Customer Id',
+            key: "customer_id",
+            name: "Customer Id",
             frozen: true,
-            width: 'max-content',
+            width: "max-content",
             renderEditCell: textEditor,
             renderSummaryCell({ row }: any) {
                 return `${row.totalCount} records`;
-            }
+            },
         },
         {
-            key: 'name',
-            name: 'Customer Name',
-            renderEditCell: textEditor
+            key: "name",
+            name: "Customer Name",
+            renderEditCell: textEditor,
         },
         {
-            key: 'branch',
-            name: 'Showroom',
+            key: "branch",
+            name: "Showroom",
         },
         {
-            key: 'order_id',
-            name: 'Order',
+            key: "order_id",
+            name: "Order",
         },
         {
-            key: 'amount',
-            name: 'Amount (N)',
+            key: "amount",
+            name: "Amount (N)",
         },
         {
-            key: 'statusMessage',
-            name: 'Error Message',
+            key: "statusMessage",
+            name: "Error Message",
         },
     ];
 }
@@ -78,19 +79,20 @@ function rowKeyGetter(row: Row) {
     return row.id;
 }
 
+// eslint-disable-next-line no-unused-vars
 type Comparator = (a: Row, b: Row) => number;
 function getComparator(sortColumn: string): Comparator {
     switch (sortColumn) {
-        case 'name':
-        case 'branch':
-        case 'statusMessage':
-        case 'order_id':
+        case "name":
+        case "branch":
+        case "statusMessage":
+        case "order_id":
             return (a, b) => {
                 return a[sortColumn].localeCompare(b[sortColumn]);
             };
-        case 'id':
-        case 'customer_id':
-        case 'amount':
+        case "id":
+        case "customer_id":
+        case "amount":
             return (a, b) => {
                 return a[sortColumn] - b[sortColumn];
             };
@@ -108,10 +110,10 @@ export default function Table({ direction, rows }: Props) {
     const summaryRows = useMemo((): readonly SummaryRow[] => {
         return [
             {
-                id: 'total_0',
+                id: "total_0",
                 totalCount: rows.length,
-                yesCount: rows.filter((r) => r.available).length
-            }
+                yesCount: rows.filter((r) => r.available).length,
+            },
         ];
     }, [rows]);
 
@@ -123,7 +125,7 @@ export default function Table({ direction, rows }: Props) {
                 const comparator = getComparator(sort.columnKey);
                 const compResult = comparator(a, b);
                 if (compResult !== 0) {
-                    return sort.direction === 'ASC' ? compResult : -compResult;
+                    return sort.direction === "ASC" ? compResult : -compResult;
                 }
             }
             return 0;
@@ -137,7 +139,7 @@ export default function Table({ direction, rows }: Props) {
             rows={sortedRows}
             defaultColumnOptions={{
                 sortable: true,
-                resizable: true
+                resizable: true,
             }}
             selectedRows={selectedRows}
             onSelectedRowsChange={setSelectedRows}

@@ -1,5 +1,5 @@
-import Image from "next/image"
-import LoginForm from './LoginForm';
+import Image from "next/image";
+import LoginForm from "./LoginForm";
 
 export default function Login() {
     return (
@@ -7,7 +7,13 @@ export default function Login() {
             <div className="flex flex-1 flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
                 <div className="mx-auto w-full max-w-sm lg:w-96">
                     <div>
-                        <Image width={0} height={0} className="h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Company" />
+                        <Image
+                            width={0}
+                            height={0}
+                            className="h-10 w-auto"
+                            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                            alt="Company"
+                        />
                         <h2 className="mt-6 text-xl font-semibold tracking-tight text-gray-900">Sign in to your account</h2>
                     </div>
 
